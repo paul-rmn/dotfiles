@@ -1,3 +1,23 @@
+"Things I want to do...
+"
+"unify vim config and everything else
+"
+"The next couple are inspired by  benbrastmckie's videos:
+"
+"-goyo?
+"
+"-highlight line so I know hwere I the line ends
+"
+"-floatterm and lazygit???
+"
+"-signify?? to have those + adn - to know what changed since last etc??
+"
+"-vim-which-key or some sort of cheatsheet and instead of \ll, \lv, \le - I'd
+"prefer key+l, key+v and key+e, where key could be either space or ,
+
+
+
+
 call has('python3')
 
 
@@ -8,10 +28,39 @@ set relativenumber
 set ignorecase "
 set smartcase 
 set incsearch " searching as ypu type
-set mouse+=a " Enable mouse support
-set clipboard=unnamedplus " enable clipboard from outside vim
-" set shortmess+=I
+set mouse=a " Enable mouse support
+set colorcolumn=80 
+highlight ColorColumn ctermbg=5
+
+"Tried cursorline but the actual line put me off. I only wanted the background 
+"set cursorline 
+"highlight CursorLine ctermbg=233
+
+
+if !has('nvim')
+set ttymouse=sgr " Make mouse clickable with alacritty
+endif
+
+if system('uname -s') == "Darwin\n"
+  set clipboard=unnamed "OSX
+else 
+  set clipboard=unnamedplus "Linux
+endif
+"
 set noerrorbells visualbell t_vb= " no error sound
+
+"tabstops
+set tabstop=4       " The width of a TAB is set to 4.
+                    " Still it is a \t. It is just that
+                    " Vim will interpret it to be having
+                    " a width of 4.
+
+set shiftwidth=4    " Indents will have a width of 4
+
+set softtabstop=4   " Sets the number of columns for a TAB
+
+set expandtab       " Expand TABs to spaces
+
 
 " Always show the status line at the bottom, even if you only have one window open.
 set laststatus=2
@@ -40,16 +89,30 @@ nmap Q <Nop> " 'Q' in normal mode enters Ex mode. You almost never want this.
 
 
 
-" filetype plugin indent on
+filetype plugin indent on
 call plug#begin('~/.vim/plugged')
 
  Plug 'lervag/vimtex'
 let g:tex_flavor = 'latex'
-let g:vimtex_view_method = 'zathura'
+"if system('uname -s') == "Darwin\n"
+" let g:vimtex_view_method = 'skim'
+" let g:vimtex_view_skim_sync = 1 "OSX
+"else 
+let g:vimtex_view_method = 'zathura' "Linux
+"endif
+
 let g:vimtex_quickfix_mode=0
 let g:vimtex_complete_enabled = 1
 let g:vimtex_fold_enabled = 1
+set conceallevel=2
+hi clear Conceal
 autocmd FileType tex setlocal ts=2 sw=2 sts=0 
+
+"Vim-fugitive for better git inside vim
+Plug 'tpope/vim-fugitive'
+
+"sartify for a nice welcome screen
+Plug 'mhinz/vim-startify'
 
 " Add coc.nvim for completion
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -67,13 +130,17 @@ autocmd FileType tex setlocal ts=2 sw=2 sts=0
  Plug 'danilo-augusto/vim-afterglow'
  Plug 'tpope/vim-vividchalk' 
 
-" Nicer status bar in vim
-" Plug 'vim-airline/vim-airline'
-" Plug 'vim-airline/vim-airline-themes'
+" Fuzzyfinder
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " Make sure you use single quotes
- Plug 'junegunn/seoul256.vim'
- Plug 'junegunn/vim-easy-align'
+ "Plug 'junegunn/seoul256.vim'
+ "Plug 'junegunn/vim-easy-align'
+
+"Goyo and limelight for focus"
+"Plug 'junegunn/goyo.vim'
+"Plug 'junegunn/limelight.vim'
 
 " Group dependencies, vim-snippets depends on ultisnips
  Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
@@ -82,30 +149,12 @@ let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<s-tab>'
 let g:UltiSnipsEditSplit = 'context'
 
+" make css colors colorful
+ Plug 'ap/vim-css-color'
 
 " On-demand loading		
 " Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
- Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+ "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 
-" Using git URL
- Plug 'https://github.com/junegunn/vim-github-dashboard.git'
-
-" Plugin options
- Plug 'nsf/gocode', { 'tag': 'v.20150303', 'rtp': 'vim' }
-
-" Plugin outside ~/.vim/plugged with post-update hook
- Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-
-" Unmanaged plugin (manually installed and updated)
-" Plug '~/my-prototype-plugin'
 
 call plug#end()
-
-
-
-" Add clipboard copy-paste
-
-"autocmd vimenter * colorscheme vividchalk
-" set bg=dark
-
- 

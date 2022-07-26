@@ -27,5 +27,8 @@ alias i3c="vim $HOME/.config/i3/config"
 alias fsizes="du -hd1"
 alias todo="vim $HOME/Documentos/i3-life/TODO"
 alias btc="bluetoothctl"
+alias s!="sudo !!"
+alias vim="vim --servername VIM"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
